@@ -61,7 +61,7 @@ def configure_logger_default():
 
 def upload_file(
     my_sketch: sketch.Sketch, config_dict: Dict[str, any], file_path: str
-) -> str:
+) -> str, int:
     """Uploads a file to Timesketch.
 
     Args:
@@ -74,10 +74,12 @@ def upload_file(
         A tuple with the timeline object (timeline.Timeline) or None if not
         able to upload the timeline as well as the celery task identification
         for the indexing.
+        In error cases, the tuple it returns is an error string and a task_id
+        of -1.
     """
 
     if not my_sketch or not hasattr(my_sketch, "id"):
-        return "Sketch needs to be set"
+        return "Sketch needs to be set", -1
 
     _, _, file_extension = file_path.rpartition(".")
     if file_extension.lower() not in ("plaso", "csv", "jsonl"):
@@ -85,10 +87,10 @@ def upload_file(
             "File needs to have one of the following extensions: "
             ".plaso, .csv, "
             ".jsonl (not {0:s})"
-        ).format(file_extension.lower())
+        ).format(file_extension.lower()), -1
 
     if os.path.getsize(file_path) <= 0:
-        return "File cannot be empty"
+        return "File cannot be empty", -1
     import_helper = helper.ImportHelper()
     import_helper.add_config_dict(config_dict)
 
