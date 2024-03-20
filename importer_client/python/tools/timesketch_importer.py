@@ -61,7 +61,7 @@ def configure_logger_default():
 
 def upload_file(
     my_sketch: sketch.Sketch, config_dict: Dict[str, any], file_path: str
-) -> str, int:
+) -> tuple[str, int]:
     """Uploads a file to Timesketch.
 
     Args:
