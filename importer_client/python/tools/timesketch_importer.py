@@ -21,7 +21,7 @@ import os
 import sys
 import time
 
-from typing import Dict
+from typing import Dict, Tuple
 
 from timesketch_api_client import cli_input
 from timesketch_api_client import credentials as ts_credentials
@@ -61,7 +61,7 @@ def configure_logger_default():
 
 def upload_file(
     my_sketch: sketch.Sketch, config_dict: Dict[str, any], file_path: str
-) -> tuple[str, int]:
+) -> Tuple[str, int]:
     """Uploads a file to Timesketch.
 
     Args:
